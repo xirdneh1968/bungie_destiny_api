@@ -3,17 +3,23 @@
 import urllib2
 import json
 import ConfigParser
-import os
+import os.path
+import sys
+
+CONFIG_FILE_NAME = '.bungie_destiny_api.rc'
 
 # API_KEY = <secret API key>
 
-# put a BungieNet API-KEY into a ini style file called 'bungie_api.cfg'
-# in the cwd of the calling script
+# put a BungieNet API-KEY obtained from https://www.bungie.net/en-US/User/API
+# into a ini style file at $HOME/CONFIG_FILE_NAME.
 
-config_file = (os.path.join(os.getcwd(),'bungie_api.cfg'))
+CONFIG_FILE = (os.path.join(os.path.expanduser("~"), CONFIG_FILE_NAME))
+
 config = ConfigParser.ConfigParser()
-config.read(config_file)
+config.read(CONFIG_FILE)
 API_KEY = config.get('api', 'API-KEY')
+
+DEBUG = int(config.get('default', 'debug'))
 
 # get_account https://www.bungie.net/platform/destiny/help/
 # DEPRECATED use get_account_summary
@@ -27,9 +33,11 @@ def get_account(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id
-           + "/Summary/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id
+               + "/Summary/" + optional_arg +")")
+
 
     acct = call_bungie_api('/' + membership_type + '/Account/'
                            + destiny_membership_id + '/' + optional_arg)
@@ -49,8 +57,9 @@ def get_account_summary(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Summary/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Summary/" + optional_arg +")")
 
     acct_summary = call_bungie_api('/' + membership_type + '/Account/'
                                    + destiny_membership_id + '/Summary/'
@@ -76,9 +85,10 @@ def get_activity_history_stats(destiny_membership_id=None
     else:
         optional_arg = optional_arg + '&mode=' + mode
 
-    print ("DEBUG: call_bungie_api(/Stats/ActivityHistory/" + membership_type
-           + "/" + destiny_membership_id + "/" + character_id + "/"
-           + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Stats/ActivityHistory/"
+               + membership_type + "/" + destiny_membership_id + "/"
+               + character_id + "/" + optional_arg +")")
 
     activity_history_stats = call_bungie_api('/Stats/ActivityHistory/'
                                              + membership_type + '/'
@@ -99,8 +109,9 @@ def get_account_advisors(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Advisors/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Advisors/" + optional_arg +")")
 
     acct_advisors = call_bungie_api('/' + membership_type + '/Account/'
                                     + destiny_membership_id + '/Advisors/'
@@ -119,9 +130,10 @@ def get_account_advisors_v2(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Character/" + character_id
-           + "/Advisors/V2/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Character/" + character_id
+               + "/Advisors/V2/" + optional_arg +")")
 
     acct_advisors_v2 = call_bungie_api('/' + membership_type + '/Account/'
                                        + destiny_membership_id + '/Character/'
@@ -141,8 +153,9 @@ def get_account_items(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Items/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Items/" + optional_arg +")")
 
     acct_items = call_bungie_api('/' + membership_type + '/Account/'
                                  + destiny_membership_id + '/items/'
@@ -153,7 +166,7 @@ def get_account_items(destiny_membership_id=None, membership_type=None
 # get_character_activities https://www.bungie.net/platform/destiny/help/
 
 def get_character_activities(destiny_membership_id=None, membership_type=None
-                            , character_id=None, definitions=None):
+                             , character_id=None, definitions=None):
     """get_character_activities()"""
 
     if definitions is None:
@@ -161,9 +174,10 @@ def get_character_activities(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Character/"
-           + character_id + "/Activities/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Character/"
+               + character_id + "/Activities/" + optional_arg +")")
 
     char_activities = call_bungie_api('/' + membership_type + '/Account/'
                                       + destiny_membership_id + '/Character/'
@@ -184,9 +198,10 @@ def get_character_inventory(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Character/"
-           + character_id + "/Inventory/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Character/"
+               + character_id + "/Inventory/" + optional_arg +")")
 
     char_inventory = call_bungie_api('/' + membership_type + '/Account/'
                                      + destiny_membership_id + '/Character/'
@@ -207,10 +222,11 @@ def get_character_inventory_summary(destiny_membership_id=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Character/"
-           + character_id + "/Inventory/Summary/"
-           + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Character/"
+               + character_id + "/Inventory/Summary/"
+               + optional_arg +")")
 
     char_inventory_summary = call_bungie_api('/' + membership_type
                                              + '/Account/'
@@ -233,10 +249,11 @@ def get_character_progression(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Character/"
-           + character_id + "/Progression/"
-           + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Character/"
+               + character_id + "/Progression/"
+               + optional_arg +")")
 
     char_progression = call_bungie_api('/' + membership_type + '/Account/'
                                        + destiny_membership_id + '/Character/'
@@ -257,9 +274,10 @@ def get_character_summary(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
-           + destiny_membership_id + "/Character/"
-           + character_id + "/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/" + membership_type + "/Account/"
+               + destiny_membership_id + "/Character/"
+               + character_id + "/" + optional_arg +")")
 
     char_summary = call_bungie_api('/' + membership_type + '/Account/'
                                    + destiny_membership_id + '/Character/'
@@ -281,9 +299,10 @@ def get_character_aggregate_stats(destiny_membership_id=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/Stats/AggregateActivityStats/"
-           + membership_type + "/" + destiny_membership_id + "/"
-           + character_id + "/" + optional_arg +")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Stats/AggregateActivityStats/"
+               + membership_type + "/" + destiny_membership_id + "/"
+               + character_id + "/" + optional_arg +")")
 
     char_agg_activity_stats = call_bungie_api('/Stats/AggregateActivityStats/'
                                               + membership_type + '/'
@@ -306,9 +325,10 @@ def get_character_stats(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?modes=' + modes
 
-    print ("DEBUG: call_bungie_api(/Stats/" + membership_type + "/"
-           + destiny_membership_id + "/" + character_id + "/"
-           + optional_arg + ")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Stats/" + membership_type + "/"
+               + destiny_membership_id + "/" + character_id + "/"
+               + optional_arg + ")")
 
     char_stats = call_bungie_api('/Stats/' + membership_type + '/'
                                  + destiny_membership_id + '/'
@@ -327,8 +347,9 @@ def get_account_stats(destiny_membership_id=None, membership_type=None
     else:
         optional_arg = '?groups=' + groups
 
-    print ("DEBUG: call_bungie_api(/Stats/Account/" + membership_type + "/"
-           + destiny_membership_id + "/" + optional_arg + ")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Stats/Account/" + membership_type + "/"
+               + destiny_membership_id + "/" + optional_arg + ")")
 
     acct_stats = call_bungie_api('/Stats/Account/' + membership_type + '/'
                                  + destiny_membership_id + '/'
@@ -346,8 +367,9 @@ def get_activity_stats(activity_id=None, definitions=None):
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/Stats/PostGameCarnageReport/"
-           + activity_id + "/" + optional_arg + ")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Stats/PostGameCarnageReport/"
+               + activity_id + "/" + optional_arg + ")")
 
     activity_pgc_report_stats = call_bungie_api('/Stats/PostGameCarnageReport/'
                                                 + activity_id + '/'
@@ -369,9 +391,10 @@ def get_char_uniq_weapon_stats(membership_type=None
     else:
         optional_arg = '?definitions=true'
 
-    print ("DEBUG: call_bungie_api(/Stats/UniqueWeapons/"
-           + membership_type + "/" + destiny_membership_id + "/"
-           + character_id + "/" + optional_arg + ")")
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Stats/UniqueWeapons/"
+               + membership_type + "/" + destiny_membership_id + "/"
+               + character_id + "/" + optional_arg + ")")
 
     char_uniq_weapon_stats = call_bungie_api('/Stats/UniqueWeapons/'
                                              + membership_type + '/'
