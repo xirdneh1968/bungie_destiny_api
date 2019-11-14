@@ -404,6 +404,77 @@ def get_char_uniq_weapon_stats(membership_type=None
 
     return char_uniq_weapon_stats
 
+# get_explorer_items at
+# https://www.bungie.net/platform/destiny/help/
+
+def get_explorer_items(count=10, page=0):
+    """get_explorer_items()"""
+
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Explorer/Items/")
+
+    explorer_items = call_bungie_api('/Explorer/Items/')
+
+    return explorer_items
+
+# get_explorer_talent_node_steps at
+# https://www.bungie.net/platform/destiny/help/
+
+def get_explorer_talent_node_steps(count=10, page=0):
+    """get_explorer_talent_node_steps()"""
+
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Explorer/TalentNodeSteps/")
+
+    explorer_talent_node_steps = call_bungie_api('/Explorer/TalentNodeSteps/')
+
+    return explorer_talent_node_steps
+
+# get_manifest at
+# https://www.bungie.net/platform/destiny/help/
+
+def get_manifest():
+    """get_explorer_talent_node_steps()"""
+
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Manifest/")
+
+    manifest = call_bungie_api('/Manifest/')
+
+    return manifest
+
+# search_destiny_player at
+# https://www.bungie.net/platform/destiny/help/
+
+# get_manifest_item at
+# https://www.bungie.net/platform/destiny/help/
+
+def get_manifest():
+    """get_explorer_talent_node_steps()"""
+
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/Manifest/")
+
+    manifest = call_bungie_api('/Manifest/')
+
+    return manifest
+
+
+def search_destiny_player(display_name=None,membership_type=None):
+    """search_destiny_player(membership_type=None,display_name=None)"""
+
+    if DEBUG:
+        print ("DEBUG: call_bungie_api(/SearchDestinyPlayer/"
+                + membership_type + "/"
+                + display_name + "/")
+
+    membership_id = call_bungie_api('/SearchDestinyPlayer/'
+                                    + membership_type + '/'
+                                    + display_name + '/')
+
+
+    return membership_id
+
 def call_bungie_api(method):
     """call_bungie_api()"""
 

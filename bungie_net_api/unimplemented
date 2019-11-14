@@ -1,6 +1,6 @@
-/Explorer/Items/ GetExplorerItems()
-/Explorer/TalentNodeSteps/ GetExplorerTalentNodeSteps()
-/Manifest/ GetManifest()
+partial /Explorer/Items/ get_explorere_items()
+partial /Explorer/TalentNodeSteps/ GetExplorerTalentNodeSteps()
+partial /Manifest/ GetManifest()
 /Manifest/{type}/{id}/ GetManifestItem()
 /Vanguard/Grimoire/{membershipType}/{membershipId}/ GetAccountGrimoire
 /Vanguard/Grimoire/Definition/ GetGrimoireDefinition
@@ -9,4 +9,4 @@
 /{membershipType}/Stats/GetMembershipIdByDisplayName/{displayName}/ GetMemberIdByDisplayName()
 /Advisors/V2/ GetAdvisorsV2()
 /{membershipType}/Account/{destinyMembershipId}/Triumphs/ GetTriumphs()
-/SearchDestinyPlayer/{membershipType}/{displayName}/ SearchDestinyPlayer()
+done /SearchDestinyPlayer/{membershipType}/{displayName}/ SearchDestinyPlayer()

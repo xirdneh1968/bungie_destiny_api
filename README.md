@@ -1,1 +1,1 @@
-# bungie_destiny_api
+# bungie.net API
